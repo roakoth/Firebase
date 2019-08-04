@@ -126,11 +126,12 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
 
         private void showImage(String url){
             if(url != null && url.isEmpty()== false){
-
+                int width = Resources.getSystem().getDisplayMetrics().widthPixels;
                 Picasso.get()
                         .load(url)
-                        .resize(60,60)
-                        .centerCrop()
+                       // .resize(width,width*2/3)
+                        .resize(200,200)
+                       .centerCrop()
                         .into(imageDeal);
             }
         }

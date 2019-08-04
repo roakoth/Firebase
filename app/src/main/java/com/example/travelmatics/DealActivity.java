@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.StorageReference;
@@ -68,6 +69,10 @@ public class DealActivity extends AppCompatActivity {
                 startActivityForResult(intent.createChooser(intent,"Insert Picture"),PICTURE_RESULT);
             }
         });
+
+        if(savedInstanceState != null){
+
+        }
     }
 
     @Override
@@ -99,16 +104,16 @@ public class DealActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.save_menu,menu);
-//        if(FirebaseUtil.isAdmin){
-//            menu.findItem(R.id.delete_menu).setVisible(true);
-//            menu.findItem(R.id.save_menu).setVisible(true);
-//            enableEditTexts(true);
-//        }
-//        else{
-//            menu.findItem(R.id.delete_menu).setVisible(false);
-//            menu.findItem(R.id.save_menu).setVisible(false);
-//            enableEditTexts(false);
-//        }
+        if(FirebaseUtil.isAdmin){
+            menu.findItem(R.id.delete_menu).setVisible(true);
+            menu.findItem(R.id.save_menu).setVisible(true);
+            enableEditTexts(true);
+        }
+        else{
+            menu.findItem(R.id.delete_menu).setVisible(false);
+            menu.findItem(R.id.save_menu).setVisible(false);
+            enableEditTexts(false);
+        }
 
 
 
@@ -125,10 +130,18 @@ public class DealActivity extends AppCompatActivity {
             ref.putFile(imageUri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                String url = taskSnapshot.getUploadSessionUri().toString();
-                String pictureName = taskSnapshot.getStorage().getPath();
+
+                    Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
+                    while
+                    (!urlTask.isSuccessful()) ;
+                    Uri downloadUrl = urlTask.getResult();
+                    String url = downloadUrl.toString();
+//                String url = taskSnapshot.getUploadSessionUri().toString();
+//                String pictureName = taskSnapshot.getStorage().getPath();
                       deal.setImageUrl(url);
-                      deal.setImageName(pictureName);
+                      //deal.setImageName(urlTask);
+
+                     // deal.setImageName(pictureName);
                     showImage(url);
                 }
             });
@@ -196,9 +209,11 @@ if(url != null && url.isEmpty()== false){
     int width = Resources.getSystem().getDisplayMetrics().widthPixels;
     Picasso.get()
             .load(url)
-            .resize(width,width*2/3)
+            .resize(600,400)
+            //.resize(width,width*2/3)
             .centerCrop()
             .into(imageView);
+
 }
     }
 }

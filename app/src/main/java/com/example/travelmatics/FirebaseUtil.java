@@ -48,10 +48,10 @@ public class FirebaseUtil {
                 FirebaseUtil.signIn();
             } else{
                 String usedId = firebaseAuth.getUid();
-                //checkAdmin(usedId);
+                checkAdmin(usedId);
             }
 
-            //Toast.makeText(callerActivity.getBaseContext(),"Welcome back",Toast.LENGTH_LONG).show();
+//            Toast.makeText(callerActivity.getBaseContext(),"Welcome back",Toast.LENGTH_LONG).show();
 
         }
     };
@@ -79,40 +79,40 @@ connectStorage();
                         RC_SIGN_IN);
     }
 
-//    private static void checkAdmin(String uid){
-//        FirebaseUtil.isAdmin = false;
-//        DatabaseReference ref = mFirebaseDatabase.getReference().child("adminstrators").child(uid);
-//        ChildEventListener listener = new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                FirebaseUtil.isAdmin=true;
-//                caller.showMenu();
-//               // Log.d("Admin","You are an adminstrator");
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        };
-//        ref.addChildEventListener(listener);
-//
-//    }
+    private static void checkAdmin(String uid){
+        FirebaseUtil.isAdmin = false;
+        DatabaseReference ref = mFirebaseDatabase.getReference().child("adminstrators").child(uid);
+        ChildEventListener listener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                FirebaseUtil.isAdmin=true;
+                caller.showMenu();
+               // Log.d("Admin","You are an adminstrator");
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        ref.addChildEventListener(listener);
+
+    }
 
     public static void attachListener(){
         mFirebaseAuth.addAuthStateListener(mAuthListener);
